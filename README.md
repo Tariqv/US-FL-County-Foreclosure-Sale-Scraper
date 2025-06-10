@@ -29,7 +29,7 @@
 - 📦 Chrome Browser Needed
 
 ### 🖥️ Windows (EXE)
-1. Download the latest `.exe` file from the [Releases](https://github.com/Naiem-ahemad/Fl-Foreclosure-County-Scraper/releases/tag/v1.0) section.
+1. Download the latest `.exe` file from the [Releases]([https://github.com/Naiem-ahemad/Fl-Foreclosure-County-Scraper](https://github.com/Tariqv/US-FL-County-Foreclosure-Sale-Scrapper/releases/tag/v1.0) section.
 2. Run it by double-clicking – **no installation required**.
 
 ---

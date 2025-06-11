@@ -30,6 +30,50 @@ A fast, user-friendly tool for scraping and merging foreclosure auction data fro
 - ❌ **No GPU Required**: Fully optimized for CPU-only PCs; runs on standard hardware.
 
 ---
+## 📍 Supported Florida Counties
+
+This scraper currently supports foreclosure auction data from the following counties:
+
+- Alachua
+- Bay
+- Broward
+- Charlotte
+- Citrus
+- Clay
+- Duval
+- Escambia
+- Flagler
+- Gilchrist
+- Gulf
+- Hillsborough
+- Indian River
+- Jackson
+- Lee
+- Leon
+- Manatee
+- Marion
+- Martin
+- Miami-Dade
+- Nassau
+- Okaloosa
+- Orange
+- Palm Beach
+- Pasco
+- Pinellas
+- Polk
+- Putnam
+- Santa Rosa
+- Sarasota
+- Seminole
+- St. Johns
+- St. Lucie
+- Volusia
+- Walton
+- Washington
+
+> To view the most up-to-date list and their URLs, see [`database/url.py`](https://github.com/Tariqv/US-FL-County-Foreclosure-Sale-Scraper/blob/main/database/url.py).
+
+---
 
 ## 📦 Installation
 

@@ -7,7 +7,7 @@ We welcome bug reports, feature requests, documentation improvements, and code c
 
 1. **Fork the repository** and clone it to your machine:
     ```bash
-    git clone https://github.com/your-username/Fl-Foreclosure-County-Scraper.git
+    git clone https://github.com/Tariqv/US-FL-County-Foreclosure-Sale-Scraper.git
     ```
 
 2. **Create a new branch** for your feature or fix:
@@ -45,10 +45,6 @@ To run the scraper locally:
 - Keep pull requests focused on one issue or feature.
 - Write clear commit messages.
 - Include screenshots or logs when reporting bugs.
-
-## 🛡 Code of Conduct
-
-Please be respectful and inclusive. We follow the [Contributor Covenant](https://www.contributor-covenant.org/version/2/1/code_of_conduct/).
 
 ---
 

@@ -140,12 +140,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ---
 
-## 🛡 License
-
-MIT License
-
----
-
 ## 📬 Contact
 
 For questions, suggestions, or support, open an issue or reach out via GitHub.

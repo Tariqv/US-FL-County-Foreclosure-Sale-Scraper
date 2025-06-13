@@ -3,7 +3,6 @@ import sys
 import time
 import shutil
 import requests
-import keyboard
 import threading
 from PySide6.QtGui import QIcon
 from Merger import Auction_merger
@@ -12,25 +11,40 @@ from PySide6.QtCore import Slot , QObject , QTimer
 from PySide6.QtGui import QGuiApplication
 from Scraper import Scraper, Calendar_scraper
 from PySide6.QtQml import QQmlApplicationEngine
+exit_ready = False
+printed_exit_message = False
 
 APP_VERSION = "v1.0"  # your current version
 
 def get_latest_version():
     try:
-        r = requests.get("https://api.github.com/repos/Naiem-ahemad/Fl-Foreclosure-County-Scraper/releases/latest", timeout=5)
+        r = requests.get("https://api.github.com/repos/Tariqv/US-FL-County-Foreclosure-Sale-Scraper/releases/latest", timeout=5)
         return r.json().get("tag_name", "")
     except Exception:
         return ""
 
 def resource_path(relative_path):
+    
     if hasattr(sys, '_MEIPASS'):
         return os.path.join(sys._MEIPASS, relative_path)
     return os.path.join(os.path.abspath("."), relative_path)
 
+class EnterKeyFilter(QObject):
+    def eventFilter(self, obj, event):
+        from PySide6.QtCore import QObject, QEvent, Qt
+        if event.type() == QEvent.KeyPress and event.key() == Qt.Key_Return:
+            if exit_ready and printed_exit_message:
+                stream.close()
+                sys.stdout = sys.__stdout__
+                sys.stderr = sys.__stderr__
+                os._exit(0)
+            return True  # 🔒 Swallow key event if not allowed
+        return super().eventFilter(obj, event)
+
 class EmittingStream(QObject):
     from PySide6.QtCore import Signal    
     charWritten = Signal(str)
-    lineClearRequest = Signal(int)  # emits how many lines to clear
+    lineClearRequest = Signal(int)
 
     def __init__(self):
         super().__init__()
@@ -57,7 +71,7 @@ class Backend(QObject):
     versionOutdated = Signal(str)
     def __init__(self):
         super().__init__()
-        
+        self.vpn_error_shown = False
         self._scraping_lock = threading.Lock()
         self.scraping = False
         self.thread = None
@@ -65,7 +79,7 @@ class Backend(QObject):
         self.vpn_verified = False  # ✅ Track VPN verification
         latest = get_latest_version()
         if latest and latest != APP_VERSION:
-            QTimer.singleShot(1000, lambda: self.versionOutdated.emit(latest))
+            QTimer.singleShot(100, lambda: self.versionOutdated.emit(latest))
 
     @Slot()
     def notify_typing_done(self):
@@ -89,18 +103,23 @@ class Backend(QObject):
                         data = response.json()
                         country = data.get("country", "Unknown")
                     except Exception:
-                        stream.charWritten.emit("⚠️ VPN check failed. Cannot determine location.\n")
+                        if not self.vpn_error_shown:
+                            stream.charWritten.emit("⚠️ VPN check failed. Cannot determine location.\n")
+                            self.vpn_error_shown = True
                         self.retry_with_countdown("VPN check", 30)
                         continue
 
                     if country != "United States":
-                        stream.charWritten.emit(f"⚠️ VPN not in US. Location: {country}\n")
+                        if not self.vpn_error_shown:
+                            stream.charWritten.emit(f"⚠️ VPN not in US. Location: {country}\n")
+                            self.vpn_error_shown = True
                         self.retry_with_countdown("VPN check", 30)
                         continue
                     else:
                         self.vpn_verified = True
                         stream.charWritten.emit(f"✅ US VPN check passed. Location: {country}\n")
                         stream.lineClearRequest.emit(5)
+                        self.vpn_error_shown = False  # ✅ reset on success
                 if not self.scraping:
                     return  # 🔚 If scraping was cancelled mid-retry
 
@@ -117,25 +136,25 @@ class Backend(QObject):
                     Auction_merger.main()
                 except Exception as e:
                     print(f"⚠️ Error during scraping: {e}\n")
-                    print("Press Enter To EXIT")
-
                 print(f"\n🔄 Cleaning up folder: {FOLDER_NAME}")
                 try:
                     shutil.rmtree(FOLDER_NAME)
                     print(f"✅ Folder deleted successfully.\n")
-                    print("Press Enter To EXIT")
                 except FileNotFoundError:
                     print(f"[-] Folder not found: {FOLDER_NAME}\n")
-                    print("Press Enter To EXIT")
                 except Exception as e:
                     print(f"⚠️ Error deleting folder {FOLDER_NAME}: {e}\n")
-                    print("↩ Press Enter To EXIT")
             except Exception as e:
                 stream.charWritten.emit(f"Error: {e}\n")
 
             finally:
                 with self._scraping_lock:
                     self.scraping = False
+                global exit_ready, printed_exit_message
+                exit_ready = True  # ✅ Enable exit after task is done
+                print("🔚 Press Enter to EXIT")
+                printed_exit_message = True  # 👈 or wherever you want this message
+
 
         self.thread = threading.Thread(target=do_scraping, daemon=True)
         self.thread.start()
@@ -178,7 +197,8 @@ class Backend(QObject):
 if __name__ == "__main__":
 
     app = QGuiApplication(sys.argv)
-
+    key_filter = EnterKeyFilter()
+    app.installEventFilter(key_filter)
     icon_path = resource_path("assets/icon.ico")
     app.setWindowIcon(QIcon(icon_path))
 
@@ -191,23 +211,11 @@ if __name__ == "__main__":
 
     engine.rootContext().setContextProperty("backend", backend)
     engine.rootContext().setContextProperty("stream", stream)
+    engine.rootContext().setContextProperty("iconPath", icon_path)
 
     qml_file = resource_path("Animation/Animation.qml")
     engine.load(qml_file)
     if not engine.rootObjects():
         stream.close()
         sys.exit(-1)
-
-    def handle_enter():
-        stream.close()
-        sys.stdout = sys.__stdout__
-        sys.stderr = sys.__stderr__
-        os._exit(0)  # 🚪 Force close all threads & GUI
-
-    def listen_for_enter():
-        keyboard.wait("enter")
-        handle_enter()
-
-    threading.Thread(target=listen_for_enter, daemon=True).start()
-
     sys.exit(app.exec())

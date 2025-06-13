@@ -2,6 +2,5 @@ selenium
 pandas
 pytz
 requests
-keyboard
 pySide6
 openpyxl

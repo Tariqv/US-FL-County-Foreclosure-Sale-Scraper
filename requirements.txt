@@ -1,6 +1,0 @@
-selenium 
-pandas
-pytz
-requests
-pySide6
-openpyxl

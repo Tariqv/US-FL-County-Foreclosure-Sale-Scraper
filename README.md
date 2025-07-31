@@ -268,7 +268,6 @@ pip install -r requirements.txt
 
 ### **Getting Help:**
 - 🐛 **Bug Reports**: [GitHub Issues](https://github.com/Tariqv/US-FL-County-Foreclosure-Sale-Scraper/issues)
-- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/Tariqv/US-FL-County-Foreclosure-Sale-Scraper/discussions)
 - 📧 **Direct Contact**: Open an issue for support questions
 
 ### **Community:**

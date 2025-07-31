@@ -239,7 +239,7 @@ pip install -r requirements.txt
 - **RAM**: 4GB (8GB recommended for large datasets)
 - **Storage**: 2GB free space (for browser and data files)
 - **Network**: Stable broadband internet connection
-- **Browser**: Google Chrome (automatically managed)
+- **Browser**: Chromium Browser (automatically managed)
 
 ### **Recommended Setup:**
 - **CPU**: Multi-core processor for faster scraping

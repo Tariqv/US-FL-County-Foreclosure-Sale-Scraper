@@ -180,7 +180,7 @@ python main.py
 
 ### **Key Technologies:**
 - **Playwright**: Headless browser automation
-- **PySide6**: Cross-platform GUI framework  
+- **Pywebview & Html , css , html**: Cross-platform GUI framework  
 - **Pandas**: Data manipulation and analysis
 - **OpenPyXL**: Excel file generation with formatting
 

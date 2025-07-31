@@ -362,11 +362,10 @@ def start_gui():
             api.stream("👋 Welcome to FL Foreclosure County Scraper...\n\n")
             api.stream(f"=== Start Scraping {AUCTION_DATE} ===")
 
-            from Scraper import Calendar_scraper, Scraper
+            from Scraper import Scraper
             from Merger import Auction_merger
 
             try:
-                Calendar_scraper.main()
                 Scraper.main()
                 Auction_merger.main()
             except Exception as e:

@@ -12,7 +12,7 @@ def is_us_ip():
     try:
         r = requests.get("http://ip-api.com/json", timeout=5).json()
         return r.get("country") == "United States"
-    except:
+    except Exception:
         return False
 
 @pytest.mark.real

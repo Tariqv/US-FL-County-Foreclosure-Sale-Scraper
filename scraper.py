@@ -1,5 +1,4 @@
 from utils import SESSION, parse_realforeclose, decode_html
-from pprint import pprint
 
 def scrape_page(session, base_url, area="C", page_dir=0, county=None):
     load_url = (
@@ -63,7 +62,7 @@ def scrape_county(county_name, base_url, auction_date):
         upd = session.get(f"{base_url}/index.cfm?zaction=AUCTION&ZMETHOD=UPDATE&FNC=UPDATE").json()
         max_pages = int(upd.get("CM", 1))
         print(f"📄 Total Pages: {max_pages}")
-    except:
+    except Exception:
         max_pages = 1
         print("✅ Defaulting to 1 page.")
 

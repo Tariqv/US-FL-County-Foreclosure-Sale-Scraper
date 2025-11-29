@@ -7,7 +7,7 @@ from db.base_url import COUNTY_URLS
 from utils import get_auction_date, extract_from_address
 import os
 
-date = '11/18/2025'
+date = get_auction_date()
 
 EXPECTED_MAP = {
     "county": "County",

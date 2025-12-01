@@ -45,7 +45,6 @@ A lightweight, high-performance tool for extracting foreclosure auction data fro
 - **Calendar Scanner**: Checks 5 months ahead for upcoming auctions
 - **Date Logic**: Handles month-end edge cases automatically
 - **Auction Classification**: Distinguishes Foreclosure vs Tax Deed sales
-- **Auto-Cleanup**: Removes temporary files post-execution
 
 ---
 
@@ -61,7 +60,7 @@ A lightweight, high-performance tool for extracting foreclosure auction data fro
 ```
 Alachua, Bay, Broward, Charlotte, Citrus, Clay, Duval, Escambia, 
 Flagler, Gilchrist, Gulf, Hillsborough, Indian River, Jackson, 
-Lee, Leon, Manatee, Marion, Martin, Miami-Dade, Nassau, Okeechobee
+Lee, Leon, Manatee, Marion, Martin, Miami-Dade, Nassau, Okeechobee,
 Orange, Palm Beach, Pasco, Pinellas, Polk, Putnam, Santa Rosa, 
 Sarasota, Seminole, St. Johns, St. Lucie, Volusia, Walton, Washington
 ```
@@ -111,11 +110,10 @@ python main.py
 ```
 
 **Automatic Steps:**
-1. **Location Validation**: Confirms US IP address
-2. **Auction Discovery**: Scans calendars for recent/upcoming sales
-3. **Data Collection**: Extracts property details via fingerprinted requests
-4. **Report Generation**: Merges data into formatted Excel files
-5. **Resource Cleanup**: Deletes temp folders/files
+1. **Location Validation**: Confirms US IP address.
+2. **Auction Discovery**: Scans calendars for recent/upcoming sales.
+3. **Data Collection**: Extracts property details via fingerprinted requests.
+4. **Report Generation**: Merges data into formatted Excel file.
 
 **Output Location:**  
 `FL Foreclosure Final Report/` directory
@@ -268,7 +266,7 @@ pytest  # Run test suite
 - 📦 Fixed PyInstaller UTF-8 issues
 - 🧪 Added pytest suite with 36-county coverage
 
-### **v1.0**
+### **v1.1**
 - Initial release
 
 ---
@@ -282,6 +280,7 @@ MIT License – see [LICENSE](LICENSE)
 **🏠 Built for Florida real estate investors**
 
 *Updated: December 2025*
+
 
 
 

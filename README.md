@@ -1,283 +1,285 @@
-# 🏛️ FL Foreclosure Auction Scraper
+# 🏛️ Florida Foreclosure Auction Scraper
 
-A powerful, automated tool for scraping and analyzing foreclosure auction data from 36 Florida counties. Built for real estate professionals, investors, and data analysts who need reliable, up-to-date foreclosure information across the state.
+A lightweight, high-performance tool for extracting foreclosure auction data from 36 Florida counties. Designed for real estate investors, analysts, and professionals who need accurate third-party bidder data without the overhead.
 
-> **🎯 Key Focus:**  
-> **This tool specifically targets _third-party foreclosure sales_ (3rd Party Bidders) from county auction websites, filtering out bank repossessions for investment opportunities.**
+> **🎯 Investment Focus:**  
+> **Targets third-party foreclosure purchases only—filters out bank repossessions to surface real investment opportunities.**
 
 ---
 
-## 📸 Application Preview
+## 📸 Preview When Checking Vpn.
+
+![Screenshot 2025-06-03 223228](![WhatsApp Image 2025-12-01 at 14 58 00_97250333](https://github.com/user-attachments/assets/8bd6b627-bc50-4010-a4d4-67045d7d92db)
+)
+
+---
+---
+
+## 📸 Preview After Checking Vpn and started Scraping.
 
 ![Screenshot 2025-06-03 223228](https://github.com/user-attachments/assets/a1932699-fb46-4364-9f74-dd671a0cc437)
 
+---
+
+## ✨ Features
+
+### ⚡ **Performance**
+- **Single Executable**: No Python, no dependencies, no setup
+- **4-5× Faster**: Lightweight cURL engine replaces heavy browser automation
+- **36 Counties**: Simultaneous multi-county scraping
+- **Smart Filtering**: Auto-removes timeshares and bank repossessions
+
+### 🔒 **Reliability** 
+- **VPN Detection**: Validates US-based IP before execution
+- **Auto-Updates**: Built-in version checker with notifications
+- **Chrome Fingerprinting**: Uses `curl_cffi` with TLS/JA3 impersonation for undetected requests
+- **Error Recovery**: Automatic retries with comprehensive logging
+
+### 📊 **Output**
+- **Excel Reports**: Clean, formatted spreadsheets with dual-sheet structure
+- **Address Intelligence**: Auto-extracts city, state, ZIP from property addresses
+- **Deduplication**: Removes duplicate entries automatically
+- **Live Progress**: Real-time terminal output in GUI
+
+### 🧹 **Automation**
+- **Calendar Scanner**: Checks 5 months ahead for upcoming auctions
+- **Date Logic**: Handles month-end edge cases automatically
+- **Auction Classification**: Distinguishes Foreclosure vs Tax Deed sales
+- **Auto-Cleanup**: Removes temporary files post-execution
 
 ---
 
-## ✨ Key Features
+## 📍 County Coverage (36 Total)
 
-### 🚀 **Core Functionality**
-- **One-Click Executable**: No Python installation required—download and run instantly
-- **Multi-County Coverage**: Scrapes 35 Florida counties simultaneously
-- **Smart Filtering**: Only captures properties sold to third-party bidders (investment opportunities)
-- **Automated Scheduling**: Intelligent date handling for daily auction monitoring
+**Metro Areas:**
+- **South Florida**: Miami-Dade, Broward, Palm Beach
+- **Central Florida**: Orange, Seminole, Volusia
+- **Tampa Bay**: Hillsborough, Pinellas, Pasco
+- **Jacksonville**: Duval, Clay, St. Johns
 
-### 🛡️ **Security & Reliability** 
-- **VPN Location Verification**: Ensures US-based access before scraping
-- **Automatic Updates**: Built-in version checking with update notifications
-- **Browser Automation**: Uses Playwright for robust, headless browser control
-- **Error Handling**: Comprehensive error recovery and logging system
-
-### 📊 **Data Processing**
-- **Excel Export**: Clean, formatted Excel files with merged county data
-- **Address Parsing**: Automatic extraction of state, city, ZIP, and clean addresses  
-- **Data Deduplication**: Removes duplicate entries and filters timeshares
-- **Real-time Progress**: Live terminal output embedded in GUI
-
-### 🧹 **Smart Management**
-- **Automatic Cleanup**: Removes temporary files and folders after processing
-- **Calendar Integration**: Checks auction availability across multiple months
-- **Auction Type Detection**: Identifies Foreclosure vs Tax Deed sales
-- **Resource Optimization**: CPU-only operation, no GPU required
-
----
-
-## 📍 Supported Florida Counties (36 Total)
-
-The scraper covers all major Florida markets:
-
-**Major Metropolitan Areas:**
-- Miami-Dade, Broward, Palm Beach (South Florida)
-- Orange, Seminole, Volusia (Central Florida) 
-- Hillsborough, Pinellas, Pasco (Tampa Bay)
-- Duval, Clay, St. Johns (Jacksonville)
-
-**Complete County List:**
+**Full List:**
 ```
 Alachua, Bay, Broward, Charlotte, Citrus, Clay, Duval, Escambia, 
 Flagler, Gilchrist, Gulf, Hillsborough, Indian River, Jackson, 
-Lee, Leon, Manatee, Marion, Martin, Miami-Dade, Nassau, 
+Lee, Leon, Manatee, Marion, Martin, Miami-Dade, Nassau, Okeechobee
 Orange, Palm Beach, Pasco, Pinellas, Polk, Putnam, Santa Rosa, 
 Sarasota, Seminole, St. Johns, St. Lucie, Volusia, Walton, Washington
 ```
 
-> 📋 **Up-to-date URLs**: See [`db/url.py`](db/url.py) for the complete list with auction site URLs.
+> 📄 **See**: [`db/url.py`](db/url.py) for complete URL configuration
 
 ---
 
-## 📦 Installation & Setup
+## 🚀 Quick Start
 
-### 🖥️ **Windows (Recommended)**
+### **Windows (Recommended)**
 
-**Prerequisites:**
-- Windows 10/11
-- US-based VPN connection (required for access)
-- Active internet connection
+**Requirements:**
+- Windows 10/11 (64-bit)
+- US-based VPN (for county site access)
+- Internet connection
 
-**Installation:**
-1. Download the latest `.exe` from [Releases](https://github.com/Tariqv/US-FL-County-Foreclosure-Sale-Scraper/releases)
-2. Double-click to run—**no installation needed**
-3. The app will automatically:
-   - Verify your US location
-   - Begin scraping process
+**Run:**
+1. Download `.exe` from [Releases](https://github.com/Tariqv/US-FL-County-Foreclosure-Sale-Scraper/releases)
+2. Double-click—it handles everything:
+   - ✅ VPN verification
+   - 🌐 Multi-county scraping
+   - 📊 Excel generation
+   - 🧹 Cleanup
 
-### 🐍 **Python Development Setup**
-
-For developers who want to modify the code:
+### **Developer Setup**
 
 ```bash
-# Clone repository
 git clone https://github.com/Tariqv/US-FL-County-Foreclosure-Sale-Scraper.git
 cd US-FL-County-Foreclosure-Sale-Scraper
-
-# Install dependencies  
 pip install -r requirements.txt
-
-# Run application
 python main.py
 ```
 
-**Required Python Packages:**
-- `curl` - Request & Networking
-- `pandas` - Data processing
-- `openpyxl` - Excel file handling
-- `pywebview` - GUI framework
-- `requests` - HTTP requests
-- `pytz` - Timezone handling
+**Dependencies:**
+- `curl_cffi` – Chrome-impersonated HTTP requests
+- `pandas` – Data processing
+- `openpyxl` – Excel generation
+- `pywebview` – GUI framework
+- `pytz` – Timezone handling
 
 ---
 
-## 🛠️ How to Use
-
-### **Simple 3-Step Process:**
-
-1. **🚀 Launch**: Double-click the executable
-2. **⏳ Wait**: App automatically verifies location
-3. **📊 Collect**: Results are saved as Excel files in `FL Foreclosure Final Report/`
-
-### **What Happens Automatically:**
+## 🛠️ Workflow
 
 ```
-🔍 VPN Check → 🕸️ Data Scraping → 📑 Excel Export
+🔍 VPN Check → 📅 Calendar Scan → 🕸️ Data Scrape → 📑 Excel Export → 🧹 Cleanup
 ```
 
-- **Location Verification**: Confirms US-based IP address
-- **Auction Availability**: Checks each county's calendar for recent auctions  
-- **Data Extraction**: Scrapes detailed property information
-- **File Organization**: Creates organized Excel reports with merged data
-- **Cleanup**: Removes temporary files automatically
+**Automatic Steps:**
+1. **Location Validation**: Confirms US IP address
+2. **Auction Discovery**: Scans calendars for recent/upcoming sales
+3. **Data Collection**: Extracts property details via fingerprinted requests
+4. **Report Generation**: Merges data into formatted Excel files
+5. **Resource Cleanup**: Deletes temp folders/files
+
+**Output Location:**  
+`FL Foreclosure Final Report/` directory
 
 ---
 
-## 📊 Output Data Structure
+## 📊 Excel Structure
 
-### **Main Sheet (Foreclosure Data):**
-| Column | Description | Example |
-|--------|-------------|---------|
-| County | Florida county name | MIAMI-DADE |
-| Auction Sold | Sale status | Yes/No |
-| Case # | Court case number | 2024-CA-001234 |
-| Parcel ID | Property identifier | 30-3210-001-0120 |
-| Property Address | Clean address | 123 MAIN ST |
-| City | Extracted city | MIAMI |
+### **Sheet 1: Foreclosure Data**
+| Field | Description | Example |
+|-------|-------------|---------|
+| County | County name | MIAMI-DADE |
+| Auction Sold | Sale status | Yes |
+| Case # | Court case ID | 2024-CA-001234 |
+| Parcel ID | Tax parcel number | 30-3210-001-0120 |
+| Property Address | Cleaned address | 123 MAIN ST |
+| City | Parsed city | MIAMI |
 | State | Always FL | FL |
 | Zip | ZIP code | 33101 |
-| Final Judgment Amount | Court judgment | $450,000.00 |
+| Final Judgment Amount | Court-ordered amount | $450,000.00 |
 | Amount | Sale price | $300,000.00 |
-| Sold To | Buyer type | 3rd Party Bidder |
+| Sold To | Buyer classification | 3rd Party Bidder |
 | Auction Type | Sale category | FORECLOSURE |
 
-### **Secondary Sheet (Availability Report):**
-- County-by-county auction availability
-- Upcoming auction dates
-- Auction type identification (Foreclosure/Tax Deed)
+### **Sheet 2: Upcoming Auctions**
+- County availability status
+- Next scheduled auction dates
+- Auction type (Foreclosure/Tax Deed)
 
 ---
 
-## 🔧 Technical Architecture
+## 🔧 Architecture
 
-### **Core Components:**
+### **Core Files**
 
-**`main.py`** - GUI and orchestration
-- WebView-based interface with real-time updates
-- Browser management and installation  
-- VPN verification and update checking
+**`main.py`**  
+- WebView GUI with typewriter animation
+- VPN/update verification
+- Process orchestration
 
-**`db/base_url.py`** - County configuration
-- Auction site URLs for all 36 counties
-- Calendar URLs for availability checking
+**`db/base_url.py`**  
+- County auction URLs
+- Calendar endpoints
 
-### **Key Technologies:**
-- **Curl**: Fast, Undetected with impersonate.
-- **Pywebview & Html , css , html**: Cross-platform GUI framework  
-- **Pandas**: Data manipulation and analysis
-- **OpenPyXL**: Excel file generation with formatting
+**`make_excel.py`**  
+- Data merging logic
+- Excel formatting/export
+
+### **Technology Stack**
+- **curl_cffi**: Chrome TLS fingerprinting (replaces Playwright)
+- **Pywebview**: HTML/CSS-based GUI
+- **Pandas**: Data manipulation
+- **OpenPyXL**: Excel styling
 
 ---
 
-## 🔄 Automation Features
+## ⚙️ Automation Logic
 
-### **Date Intelligence:**
-- **Day 1 of Month**: Checks last day of previous month
-- **Other Days**: Checks previous day's auctions
-- **Multi-month Scanning**: Searches forward for upcoming auctions
-- **Fastest Scraping**: Uses Curl Fast Undetected.
+### **Calendar Intelligence**
+- **Day 1**: Checks prior month's last day
+- **Other Days**: Checks previous day
+- **Forward Scan**: Searches 5 months ahead for next auction
 
-### **Error Recovery:**
-- Automatic retry on connection failures
-- Graceful handling of missing data
-- Comprehensive logging system
+### **Error Handling**
+- Automatic retry on network failures
+- Graceful degradation for missing data
+- UTF-8 safe logging (EXE-compatible)
 
-### **Resource Management:**
-- Temporary folder cleanup
-- Memory-efficient data processing
+### **Resource Management**
+- In-memory data processing
+- Temp file auto-deletion
+- No browser binaries required
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions! Here's how to get started:
-
-### **Development Setup:**
+### **Setup**
 ```bash
 git clone https://github.com/Tariqv/US-FL-County-Foreclosure-Sale-Scraper.git
 cd US-FL-County-Foreclosure-Sale-Scraper
 pip install -r requirements.txt
+pytest  # Run test suite
 ```
 
-### **Code Structure:**
-- `main.py` - Application entry point and GUI
-- `dB /` - County URLs and configuration
-- `Utils /` - Helper Components
-- `Animation/` - GUI assets and styling
+### **Project Structure**
+```
+├── main.py              # Entry point
+├── db/                  # County configs
+├── Utils/               # Helper functions
+├── Animation/           # GUI assets
+└── tests/               # pytest suite
+```
 
-### **Contribution Guidelines:**
-- Fork the repository
-- Create a feature branch (`git checkout -b feature/new-feature`)
-- Make your changes with clear commit messages
-- Test thoroughly across multiple counties
-- Submit a pull request with detailed description
-
----
-
-## 📋 System Requirements
-
-### **Minimum Requirements:**
-- **OS**: Windows 10 (64-bit) or later
-- **RAM**: 2GB (8GB recommended for large datasets)
-- **Storage**: 500mb free space (data files)
-- **Network**: Stable broadband internet connection
-
-### **Recommended Setup:**
-- **CPU**: Multi-core processor for faster scraping
-- **RAM**: 2GB+ for handling large county datasets
-- **SSD**: For faster file I/O operations
-- **VPN**: US-based VPN service if running from outside US
+### **PR Guidelines**
+1. Fork & create feature branch
+2. Add tests for new functionality
+3. Ensure pytest passes
+4. Submit PR with clear description
 
 ---
 
-## 🔒 Legal & Compliance
+## 💻 System Requirements
 
-### **Important Notes:**
-- This tool accesses **publicly available** auction data
-- Designed for legitimate real estate research and investment
-- Users are responsible for complying with website terms of service
-- Recommended to use responsibly with appropriate delays between requests
+**Minimum:**
+- Windows 10 (64-bit)
+- 2GB RAM
+- 500MB storage
+- Stable internet
 
-### **Data Usage:**
-- All scraped data is from public county records
-- No personal information or protected data is collected
-- Tool focuses only on property auction information
-
----
-
-## 📞 Support & Community
-
-### **Getting Help:**
-- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/Tariqv/US-FL-County-Foreclosure-Sale-Scraper/issues)
-- 📧 **Direct Contact**: Open an issue for support questions
-
-### **Community:**
-- Star ⭐ the repository if you find it useful
-- Share your success stories and use cases
-- Contribute county additions or improvements
+**Recommended:**
+- Multi-core CPU
+- 4GB+ RAM
+- SSD storage
+- US-based VPN
 
 ---
 
-## 📈 Version History
+## ⚖️ Legal
 
-- **v1.1** (Current) - Enhanced GUI, remove heavy browser, added small requests, fastest  scraping, fast launch, no browser download.
-- **v1.1** (Current) - Enhanced GUI, automatic updates, improved error handling
-- **v1.0** - Initial release with core scraping functionality
+**Important:**
+- Accesses **public auction records only**
+- For legitimate real estate research
+- Users responsible for ToS compliance
+- No PII collection
+
+---
+
+## 📞 Support
+
+**Issues:**  
+[GitHub Issues](https://github.com/Tariqv/US-FL-County-Foreclosure-Sale-Scraper/issues)
+
+**Community:**
+- ⭐ Star if useful
+- 🐛 Report bugs
+- 💡 Suggest features
+
+---
+
+## 📝 Changelog
+
+### **v1.2** (Current)
+- 🚀 Removed Playwright—4-5× faster execution
+- 🌐 Added `curl_cffi` with Chrome fingerprinting
+- ⚡ Rewrote scraper engine (multi-page, filtering)
+- 🗓️ Fixed calendar parser (`.CALDAYBOX`/`.CALBOX`)
+- 💻 Enhanced GUI (typewriter animation, emoji rendering)
+- 📊 Improved Excel output (auto-sizing, Sheet2)
+- 📦 Fixed PyInstaller UTF-8 issues
+- 🧪 Added pytest suite with 36-county coverage
+
+### **v1.0**
+- Initial release
 
 ---
 
 ## 📄 License
 
-This project is released under the MIT License. See [LICENSE](LICENSE) for details.
+MIT License – see [LICENSE](LICENSE)
 
 ---
 
-**Made with ❤️ for the Florida real estate community**
+**🏠 Built for Florida real estate investors**
 
-*Last updated: November 2025*
+*Updated: December 2024*

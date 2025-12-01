@@ -9,8 +9,8 @@ A lightweight, high-performance tool for extracting foreclosure auction data fro
 
 ## 📸 Preview When Checking Vpn.
 
-(![WhatsApp Image 2025-12-01 at 14 58 00_97250333](https://github.com/user-attachments/assets/8bd6b627-bc50-4010-a4d4-67045d7d92db)
-)
+![WhatsApp Image 2025-12-01 at 14 58 00_97250333](https://github.com/user-attachments/assets/8bd6b627-bc50-4010-a4d4-67045d7d92db)
+
 
 ---
 ---
@@ -282,5 +282,6 @@ MIT License – see [LICENSE](LICENSE)
 **🏠 Built for Florida real estate investors**
 
 *Updated: December 2025*
+
 
 

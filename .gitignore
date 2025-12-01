@@ -1,0 +1,10 @@
+*__pycache__
+*.pyc
+*.xlsx
+*logs
+*venv
+*dist
+*build
+*.spec
+*.pytest_cache
+FL Forclosure Final Report

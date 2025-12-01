@@ -18,7 +18,7 @@ A powerful, automated tool for scraping and analyzing foreclosure auction data f
 
 ### 🚀 **Core Functionality**
 - **One-Click Executable**: No Python installation required—download and run instantly
-- **Multi-County Coverage**: Scrapes 36 Florida counties simultaneously
+- **Multi-County Coverage**: Scrapes 35 Florida counties simultaneously
 - **Smart Filtering**: Only captures properties sold to third-party bidders (investment opportunities)
 - **Automated Scheduling**: Intelligent date handling for daily auction monitoring
 
@@ -56,12 +56,12 @@ The scraper covers all major Florida markets:
 ```
 Alachua, Bay, Broward, Charlotte, Citrus, Clay, Duval, Escambia, 
 Flagler, Gilchrist, Gulf, Hillsborough, Indian River, Jackson, 
-Lee, Leon, Manatee, Marion, Martin, Miami-Dade, Nassau, Okaloosa, 
+Lee, Leon, Manatee, Marion, Martin, Miami-Dade, Nassau, 
 Orange, Palm Beach, Pasco, Pinellas, Polk, Putnam, Santa Rosa, 
 Sarasota, Seminole, St. Johns, St. Lucie, Volusia, Walton, Washington
 ```
 
-> 📋 **Up-to-date URLs**: See [`database/url.py`](database/url.py) for the complete list with auction site URLs.
+> 📋 **Up-to-date URLs**: See [`db/url.py`](db/url.py) for the complete list with auction site URLs.
 
 ---
 
@@ -78,7 +78,6 @@ Sarasota, Seminole, St. Johns, St. Lucie, Volusia, Walton, Washington
 1. Download the latest `.exe` from [Releases](https://github.com/Tariqv/US-FL-County-Foreclosure-Sale-Scraper/releases)
 2. Double-click to run—**no installation needed**
 3. The app will automatically:
-   - Download required browser components
    - Verify your US location
    - Begin scraping process
 
@@ -99,7 +98,7 @@ python main.py
 ```
 
 **Required Python Packages:**
-- `playwright` - Browser automation
+- `curl` - Request & Networking
 - `pandas` - Data processing
 - `openpyxl` - Excel file handling
 - `pywebview` - GUI framework
@@ -113,13 +112,13 @@ python main.py
 ### **Simple 3-Step Process:**
 
 1. **🚀 Launch**: Double-click the executable
-2. **⏳ Wait**: App automatically verifies location and downloads browsers
+2. **⏳ Wait**: App automatically verifies location
 3. **📊 Collect**: Results are saved as Excel files in `FL Foreclosure Final Report/`
 
 ### **What Happens Automatically:**
 
 ```
-🔍 VPN Check → 🌐 Browser Setup → 📅 Calendar Scan → 🕸️ Data Scraping → 📑 Excel Export
+🔍 VPN Check → 🕸️ Data Scraping → 📑 Excel Export
 ```
 
 - **Location Verification**: Confirms US-based IP address
@@ -164,22 +163,12 @@ python main.py
 - Browser management and installation  
 - VPN verification and update checking
 
-**`Scraper/Scraper.py`** - Data extraction engine
-- Playwright-based web automation
-- Multi-page navigation and parsing
-- Calendar integration for date validation
-
-**`Merger/Auction_merger.py`** - Data processing
-- Address parsing and normalization
-- County data merging and deduplication
-- Excel formatting and export
-
-**`database/url.py`** - County configuration
+**`db/base_url.py`** - County configuration
 - Auction site URLs for all 36 counties
 - Calendar URLs for availability checking
 
 ### **Key Technologies:**
-- **Playwright**: Headless browser automation
+- **Curl**: Fast, Undetected with impersonate.
 - **Pywebview & Html , css , html**: Cross-platform GUI framework  
 - **Pandas**: Data manipulation and analysis
 - **OpenPyXL**: Excel file generation with formatting
@@ -192,6 +181,7 @@ python main.py
 - **Day 1 of Month**: Checks last day of previous month
 - **Other Days**: Checks previous day's auctions
 - **Multi-month Scanning**: Searches forward for upcoming auctions
+- **Fastest Scraping**: Uses Curl Fast Undetected.
 
 ### **Error Recovery:**
 - Automatic retry on connection failures
@@ -200,7 +190,6 @@ python main.py
 
 ### **Resource Management:**
 - Temporary folder cleanup
-- Browser process management  
 - Memory-efficient data processing
 
 ---
@@ -218,9 +207,8 @@ pip install -r requirements.txt
 
 ### **Code Structure:**
 - `main.py` - Application entry point and GUI
-- `Scraper/` - Web scraping logic
-- `Merger/` - Data processing and export
-- `database/` - County URLs and configuration
+- `dB /` - County URLs and configuration
+- `Utils /` - Helper Components
 - `Animation/` - GUI assets and styling
 
 ### **Contribution Guidelines:**
@@ -236,14 +224,13 @@ pip install -r requirements.txt
 
 ### **Minimum Requirements:**
 - **OS**: Windows 10 (64-bit) or later
-- **RAM**: 4GB (8GB recommended for large datasets)
-- **Storage**: 2GB free space (for browser and data files)
+- **RAM**: 2GB (8GB recommended for large datasets)
+- **Storage**: 500mb free space (data files)
 - **Network**: Stable broadband internet connection
-- **Browser**: Chromium Browser (automatically managed)
 
 ### **Recommended Setup:**
 - **CPU**: Multi-core processor for faster scraping
-- **RAM**: 8GB+ for handling large county datasets
+- **RAM**: 2GB+ for handling large county datasets
 - **SSD**: For faster file I/O operations
 - **VPN**: US-based VPN service if running from outside US
 
@@ -279,6 +266,7 @@ pip install -r requirements.txt
 
 ## 📈 Version History
 
+- **v1.1** (Current) - Enhanced GUI, remove heavy browser, added small requests, fastest  scraping, fast launch, no browser download.
 - **v1.1** (Current) - Enhanced GUI, automatic updates, improved error handling
 - **v1.0** - Initial release with core scraping functionality
 
@@ -292,4 +280,4 @@ This project is released under the MIT License. See [LICENSE](LICENSE) for detai
 
 **Made with ❤️ for the Florida real estate community**
 
-*Last updated: January 2025*
+*Last updated: November 2025*

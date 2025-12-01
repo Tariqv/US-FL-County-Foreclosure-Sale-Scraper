@@ -85,7 +85,6 @@ Sarasota, Seminole, St. Johns, St. Lucie, Volusia, Walton, Washington
    - ✅ VPN verification
    - 🌐 Multi-county scraping
    - 📊 Excel generation
-   - 🧹 Cleanup
 
 ### **Developer Setup**
 
@@ -282,4 +281,5 @@ MIT License – see [LICENSE](LICENSE)
 
 **🏠 Built for Florida real estate investors**
 
-*Updated: December 2024*
+*Updated: December 2025*
+

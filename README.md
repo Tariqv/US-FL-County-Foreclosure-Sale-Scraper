@@ -107,7 +107,7 @@ python main.py
 ## 🛠️ Workflow
 
 ```
-🔍 VPN Check → 📅 Calendar Scan → 🕸️ Data Scrape → 📑 Excel Export → 🧹 Cleanup
+🔍 VPN Check → 📅 Calendar Scan → 🕸️ Data Scrape → 📑 Excel Export
 ```
 
 **Automatic Steps:**
@@ -282,6 +282,7 @@ MIT License – see [LICENSE](LICENSE)
 **🏠 Built for Florida real estate investors**
 
 *Updated: December 2025*
+
 
 
 

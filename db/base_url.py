@@ -16,6 +16,7 @@ COUNTY_URLS = {
     "LEE": "https://www.lee.realforeclose.com",
     "LEON": "https://www.leon.realforeclose.com",
     "MANATEE": "https://www.manatee.realforeclose.com",
+    "OKEECHOBEE": "https://okeechobee.realforeclose.com/",
     "MARION": "https://www.marion.realforeclose.com",
     "MARTIN": "https://www.martin.realforeclose.com",
     "MIAMI-DADE": "https://www.miamidade.realforeclose.com",

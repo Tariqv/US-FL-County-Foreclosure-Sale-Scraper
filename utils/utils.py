@@ -111,7 +111,6 @@ def parse_realforeclose(county, html):
             "parcel_id": None,
             "parcel_url": None,
             "property_address": None,
-            "city_zip": None,
             "plaintiff_max_bid": None
         }
 
@@ -153,7 +152,10 @@ def parse_realforeclose(county, html):
                 data["parcel_url"] = link["href"] if link else None
 
             elif is_label(label, "property address"):
-                data["property_address"] = txt
+                line1 = txt
+                line2 = val_el.find_next("td").get_text(strip=True)
+                line3 = val_el.find_next("td").find_next("td").get_text(strip=True)
+                data["property_address"] = f"{line1} {line2} {line3}"
 
             elif label == "":
                 data["city_zip"] = txt

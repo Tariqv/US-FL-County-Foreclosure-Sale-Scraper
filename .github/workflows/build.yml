@@ -25,21 +25,22 @@ jobs:
 
       - name: Build EXE
         run: |
-          pyinstaller ^
-            --noconfirm ^
-            --onefile ^
-            --windowed ^
-            --name "FL_Foreclosure_Scraper" ^
-            --add-data "Animation;Animation" ^
-            --add-data "utils;utils" ^
-            --add-data "db;db" ^
-            --icon "Animation/icon.ico" ^
-            main.py
+          pyinstaller `
+          --noconfirm `
+          --onefile `
+          --windowed `
+          --name FL_Foreclosure_Scraper `
+          --add-data "Animation;Animation" `
+          --add-data "utils;utils" `
+          --add-data "db;db" `
+          --icon Animation/icon.ico `
+          main.py
 
       - name: Upload to existing release (replace file)
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v1.2          # <-- only replaced, not recreated
+          tag_name: v1.2
           files: dist/FL_Foreclosure_Scraper.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

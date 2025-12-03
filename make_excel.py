@@ -4,7 +4,7 @@ from openpyxl.utils import get_column_letter
 from scraper import scrape_county
 from upcoming import find_next_upcoming
 from db.base_url import COUNTY_URLS
-from utils import get_auction_date, extract_from_address
+from utils import get_auction_date, extract_from_address, SESSION
 import os
 
 date = get_auction_date()
@@ -25,6 +25,15 @@ EXPECTED_MAP = {
     "auction time": "Auction Time",
     "upcoming date": "Upcoming Date",
 }
+
+def check_404_status():
+    session = SESSION()
+    url = 'https://www.alachua.realforeclose.com/'
+    
+    r = session.get(url)
+    if r.status_code == 404:
+        return True
+    return False
 
 def norm(x: str):
     return x.lower().strip().replace(":", "").replace("#", "").replace("_", " ")
@@ -54,6 +63,11 @@ def build_rows(county, auctions):
 def main():
     all_rows = []
     sheet2_rows = []
+
+    if check_404_status():
+        print('Please Reconnect or Change loaction from Vpn.')
+        print('Thanks For Using...')
+        return
 
     for county, base_url in COUNTY_URLS.items():
         auctions = scrape_county(county, base_url, date)

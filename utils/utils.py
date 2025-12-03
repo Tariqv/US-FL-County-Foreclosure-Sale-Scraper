@@ -153,9 +153,12 @@ def parse_realforeclose(county, html):
 
             elif is_label(label, "property address"):
                 line1 = txt
-                line2 = val_el.find_next("td").get_text(strip=True)
-                line3 = val_el.find_next("td").find_next("td").get_text(strip=True)
-                data["property_address"] = f"{line1} {line2} {line3}"
+                if val_el.find_next("td"):
+                    line2 = val_el.find_next("td").get_text(strip=True)
+                    line3 = val_el.find_next("td").find_next("td").get_text(strip=True)
+                    data["property_address"] = f"{line1} {line2} {line3}"
+                else:
+                    data["property_address"] = line1
 
             elif label == "":
                 data["city_zip"] = txt

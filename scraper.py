@@ -57,7 +57,7 @@ def scrape_county(county_name, base_url, auction_date):
     page0 = scrape_page(session, base_url, "C", 0, county_name)
     all_auctions.extend(page0)
     if not all_auctions:
-        return None
+        return []
     try:
         upd = session.get(f"{base_url}/index.cfm?zaction=AUCTION&ZMETHOD=UPDATE&FNC=UPDATE").json()
         max_pages = int(upd.get("CM", 1))

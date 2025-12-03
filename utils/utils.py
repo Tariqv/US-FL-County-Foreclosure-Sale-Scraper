@@ -156,7 +156,7 @@ def parse_realforeclose(county, html):
                 if val_el.find_next("td"):
                     line2 = val_el.find_next("td").get_text(strip=True)
                     line3 = val_el.find_next("td").find_next("td").get_text(strip=True)
-                    data["property_address"] = f"{line1} {line2} {line3}"
+                    data["property_address"] = f"{line1}, {line2} {line3}"
                 else:
                     data["property_address"] = line1
 
@@ -212,24 +212,59 @@ def get_auction_date():
     return AUCTION_DATE
 
 def extract_from_address(address: str):
-    address = str(address).strip()
+    address = (address or "").strip()
     if not address:
-        return "", "FL", "", ""
+        return "", "", "FL", ""
+
     try:
         parsed, _ = usaddress.tag(address)
-    except:
+    except usaddress.RepeatedLabelError:
         parsed = {}
-    city = parsed.get("PlaceName", "").strip().upper()
-    state = parsed.get("StateName", "").replace("-", "").strip().upper()
-    zipcode = parsed.get("ZipCode", "").strip()
-    address_parts = []
-    for key, value in parsed.items():
-        if key in ("PlaceName", "StateName", "ZipCode"):
-            continue
-        address_parts.append(value)
-    street_address = " ".join(address_parts).strip()
-    return street_address, city, state, zipcode
 
+    zipcode = (parsed.get("ZipCode") or "").strip()
+    city    = (parsed.get("PlaceName") or "").strip().upper()
+
+    if not zipcode:
+        m = re.search(r"\b(\d{5})(?:-\d{4})?\b", address)
+        if m:
+            zipcode = m.group(1)
+
+    if not city:
+        if "StreetNamePostDirectional" in parsed:
+            maybe_city = parsed["StreetNamePostDirectional"].strip().upper()
+
+            # If this directional word appears RIGHT BEFORE ZIP → it's a CITY
+            if zipcode and maybe_city and f"{maybe_city}," in address.upper():
+                city = maybe_city
+                parsed.pop("StreetNamePostDirectional", None)
+
+    if not city:
+        m = re.search(r",\s*([A-Za-z\s]+)\s*,?\s*\d{5}", address)
+        if m:
+            city = m.group(1).strip().upper()
+        else:
+            if zipcode and zipcode in address:
+                before_zip = address.split(zipcode)[0]
+                parts = before_zip.replace(",", " ").split()
+                if len(parts) >= 1:
+                    city = parts[-1].strip().upper()
+
+    street_parts = []
+    for key in ["AddressNumber", "StreetNamePreDirectional",
+                "StreetName", "StreetNamePostType"]:
+        if key in parsed:
+            street_parts.append(parsed[key])
+
+    street = " ".join(street_parts).strip()
+
+    if not street:
+        if city and city in address:
+            street = address.split(city)[0]
+        elif zipcode:
+            street = address.split(zipcode)[0]
+        street = street.replace(",", " ").strip()
+
+    return street, city, "FL", zipcode
 
 def init_usaddress():
     model_path = os.path.join(os.path.dirname(__file__), "usaddress", "data", "usaddr.crfsuite")

@@ -183,8 +183,6 @@ def parse_calendar(html):
             day = int(calnum.text.strip()) if calnum else None
 
             caltext = box.select_one(".CALTEXT")
-
-            print(caltext)
             if caltext:
                 type_name = caltext.contents[0].strip()
                 active = int(caltext.select_one(".CALACT").text.strip())

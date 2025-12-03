@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-import re
+import re, os
 from curl_cffi import requests
 from datetime import datetime, timedelta
 import usaddress
@@ -184,6 +184,7 @@ def parse_calendar(html):
 
             caltext = box.select_one(".CALTEXT")
 
+            print(caltext)
             if caltext:
                 type_name = caltext.contents[0].strip()
                 active = int(caltext.select_one(".CALACT").text.strip())
@@ -205,6 +206,7 @@ def parse_calendar(html):
             })
 
     return results or None
+
 def get_auction_date():
     real_date = datetime.now()
     yesterday = real_date - timedelta(days=1)
@@ -212,19 +214,25 @@ def get_auction_date():
     return AUCTION_DATE
 
 def extract_from_address(address: str):
-    """
-    Safely extract (city, state, zip) using usaddress.
-    Never throws error. Always returns 3 strings.
-    """
     address = str(address).strip()
     if not address:
-        return "", 'FL', ""
+        return "", "FL", "", ""
     try:
         parsed, _ = usaddress.tag(address)
-    except usaddress.RepeatedLabelError:
+    except:
         parsed = {}
     city = parsed.get("PlaceName", "").strip().upper()
-    state = 'FL'.upper()
+    state = parsed.get("StateName", "").replace("-", "").strip().upper()
     zipcode = parsed.get("ZipCode", "").strip()
+    address_parts = []
+    for key, value in parsed.items():
+        if key in ("PlaceName", "StateName", "ZipCode"):
+            continue
+        address_parts.append(value)
+    street_address = " ".join(address_parts).strip()
+    return street_address, city, state, zipcode
 
-    return city, state, zipcode
+
+def init_usaddress():
+    model_path = os.path.join(os.path.dirname(__file__), "usaddress", "data", "usaddr.crfsuite")
+    usaddress.TAGGER.open(model_path)

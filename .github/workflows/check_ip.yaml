@@ -1,2 +1,0 @@
-- name: Show public IP
-  run: curl https://ipinfo.io

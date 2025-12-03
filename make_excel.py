@@ -4,7 +4,7 @@ from openpyxl.utils import get_column_letter
 from scraper import scrape_county
 from upcoming import find_next_upcoming
 from db.base_url import COUNTY_URLS
-from utils import get_auction_date, extract_from_address, SESSION
+from utils import get_auction_date, extract_from_address, SESSION, init_usaddress
 import os
 
 date = get_auction_date()
@@ -41,13 +41,13 @@ def norm(x: str):
 def build_rows(county, auctions):
     rows = []
     for a in auctions:
-        City, State, Zip = extract_from_address(a.get("property_address"))
+        only_address, City, State, Zip = extract_from_address(a.get("property_address"))
         rows.append({
             "County": county.upper(),
             "Auction Sold": a.get("auction_time"),
             "Case #": a.get("case_number"),
             "Parcel ID": a.get("parcel_id"),
-            "Property Address": a.get("property_address"),
+            "Property Address": only_address,
             "City": City,
             "State": State,
             "Zip": Zip,
@@ -61,6 +61,7 @@ def build_rows(county, auctions):
 
 
 def main():
+    init_usaddress()
     all_rows = []
     sheet2_rows = []
 
@@ -76,7 +77,7 @@ def main():
             all_rows.extend(rows)
         else:
             print(f'⚠️ Skipping {county} No Data Found.')
-        upcoming = find_next_upcoming(county, base_url, date)
+        upcoming = find_next_upcoming(base_url, date)
         sheet2_rows.append({
             "County": county.upper(),
             "Upcoming Date": upcoming.get('next_date') or "",

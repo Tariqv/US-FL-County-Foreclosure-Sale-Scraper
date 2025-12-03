@@ -1,7 +1,7 @@
 from utils import SESSION, parse_calendar
 from datetime import datetime, timedelta
 
-def find_next_upcoming(county, base_url, auction_date):
+def find_next_upcoming(base_url, auction_date):
     session = SESSION()
     date_obj = datetime.strptime(auction_date, "%m/%d/%Y")
 

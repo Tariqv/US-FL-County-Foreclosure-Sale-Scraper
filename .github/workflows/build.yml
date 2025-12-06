@@ -20,9 +20,6 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Show public IP
-        run: curl https://ipinfo.io
-
       - name: Install deps
         run: |
           python -m pip install --upgrade pip

@@ -51,50 +51,6 @@ def decode_html(raw):
         html = html.replace(token, val)
     return html
 
-def extract_auctions(decoded_html):
-    blocks = re.findall(
-        r'<div id="AITEM_[0-9]+".*?</div>@A@E_ITEM_SPACER',
-        decoded_html,
-        flags=re.DOTALL,
-    )
-
-    auctions = []
-    for block in blocks:
-        auctions.append(parse_block(block))
-
-    return auctions
-
-def parse_block(block):
-    soup = BeautifulSoup(block, "html.parser")
-    text = [t.strip() for t in soup.stripped_strings]
-
-    data = {}
-
-    for i, t in enumerate(text):
-        if t == "Auction Type:":
-            data["auction_type"] = text[i+1]
-
-        elif t == "Case #:":
-            data["case_number"] = text[i+1]
-
-        elif t == "Final Judgment Amount:":
-            data["final_judgment"] = text[i+1]
-
-        elif t == "Parcel ID:":
-            data["parcel_id"] = text[i+1]
-
-        elif t == "Property Address:":
-            data["property_address"] = text[i+1] + " " + text[i+2]
-
-        elif t == "Plaintiff Max Bid:":
-            data["plaintiff_max_bid"] = text[i+1]
-
-    return data
-
-def retHTML_to_json(retHTML):
-    decoded = decode_html(retHTML)
-    return extract_auctions(decoded)
-
 def parse_realforeclose(county, html):
     soup = BeautifulSoup(html, "html.parser")
     auctions = []
@@ -116,7 +72,6 @@ def parse_realforeclose(county, html):
 
         pairs = []
 
-        # TABLE FORMAT
         for tr in item.select("table tr"):
             tds = tr.find_all("td")
             if len(tds) >= 2:
@@ -153,9 +108,14 @@ def parse_realforeclose(county, html):
 
             elif is_label(label, "property address"):
                 line1 = txt
-                if val_el.find_next("td"):
-                    line2 = val_el.find_next("td").get_text(strip=True)
-                    line3 = val_el.find_next("td").find_next("td").get_text(strip=True)
+                next_div = val_el.find_next_sibling("div", class_="AD_DTA")
+                if next_div:
+                    line2 = next_div.get_text(strip=True)
+                    data["property_address"] = f"{line1}, {line2}"
+                elif val_el.find_all_next("td", limit=2) and len(tds) == 2:
+                    tds = val_el.find_all_next("td", limit=2)
+                    line2 = tds[0].get_text(strip=True)
+                    line3 = tds[1].get_text(strip=True)
                     data["property_address"] = f"{line1}, {line2} {line3}"
                 else:
                     data["property_address"] = line1
@@ -220,7 +180,6 @@ def extract_from_address(address: str):
         parsed, _ = usaddress.tag(address)
     except usaddress.RepeatedLabelError:
         parsed = {}
-
     zipcode = (parsed.get("ZipCode") or "").strip()
     city    = (parsed.get("PlaceName") or "").strip().upper()
 

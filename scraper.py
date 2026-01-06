@@ -47,7 +47,7 @@ def parse_update_dict(update_json):
 def scrape_county(county_name, base_url, auction_date):
     print(f"\n=== Scraping {county_name} ===")
     final_auctions = []
-
+    seen_ids = set()
     session = SESSION()
     print(f"🔄 Start Scraping {county_name} 🕸️...")
     preview = f"{base_url}/index.cfm?zaction=AUCTION&Zmethod=PREVIEW&AUCTIONDATE={auction_date}"
@@ -72,7 +72,9 @@ def scrape_county(county_name, base_url, auction_date):
         all_auctions.extend(page_result)
     for auction in all_auctions:
         parcel = str(auction.get("parcel_id", "")).upper()
-
+        if parcel in seen_ids:
+            continue
+        seen_ids.add(parcel)
         is_timeshare = (
             "TS" in parcel or
             "WK" in parcel or

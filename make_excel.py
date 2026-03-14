@@ -78,34 +78,54 @@ def main():
         else:
             print(f'⚠️ Skipping {county} No Data Found.')
         upcoming = find_next_upcoming(base_url, date)
+        if not upcoming:
+            print(f'⚠️ No upcoming auction found for {county} in 12 months.')
         sheet2_rows.append({
             "County": county.upper(),
-            "Upcoming Date": upcoming.get('next_date') or "",
+            "Upcoming Date": upcoming.get('next_date') or "No upcoming auction found in 12 months for this county",
             "Auction Type": "FORECLOSURE"
         })
-    df = pd.DataFrame(all_rows)
-    normalized = {
-        col: EXPECTED_MAP[norm(col)]
-        for col in df.columns
-        if norm(col) in EXPECTED_MAP
-    }
     output_folder = "FL Forclosure Final Report"
     os.makedirs(output_folder, exist_ok=True)
-    df = df.rename(columns=normalized)
-    final_cols = list(EXPECTED_MAP.values())
-    df = df[[c for c in final_cols if c in df.columns]]
     output_file =  os.path.join(output_folder, f"Final_{date.replace('/', '-')}.xlsx")
-    df.to_excel(output_file, index=False)
-    wb = load_workbook(output_file)
-    ws = wb.active
-    for col in ws.columns:
-        width = max((len(str(c.value)) for c in col if c.value), default=0) + 2
-        ws.column_dimensions[get_column_letter(col[0].column)].width = width
-    wb.save(output_file)
+    if os.path.exists(output_file):
+        try:
+            os.rename(output_file, output_file)
+        except PermissionError:
+            print("⚠️ Please close the Excel file first and rerun application.")
+            return
     df2 = pd.DataFrame(sheet2_rows)
+    if all_rows:
+        df = pd.DataFrame(all_rows)
 
-    with pd.ExcelWriter(output_file, engine="openpyxl", mode="a") as writer:
-        df2.to_excel(writer, sheet_name="Sheet2", index=False)
+        normalized = {
+            col: EXPECTED_MAP[norm(col)]
+            for col in df.columns
+            if norm(col) in EXPECTED_MAP
+        }
+
+        df = df.rename(columns=normalized)
+
+        final_cols = list(EXPECTED_MAP.values())
+        df = df[[c for c in final_cols if c in df.columns]]
+
+        with pd.ExcelWriter(output_file, engine="openpyxl") as writer:
+            df.to_excel(writer, sheet_name="Sheet1", index=False)
+            df2.to_excel(writer, sheet_name="Sheet2", index=False)
+
+    else:
+        print("⚠️ No 3rd party bidder auction found. Writing upcoming auctions only.")
+        df2.to_excel(output_file, index=False)
+
+    wb = load_workbook(output_file)
+    for ws in wb.worksheets:
+        for col in ws.columns:
+            max_len = max((len(str(c.value)) for c in col if c.value), default=0)
+            ws.column_dimensions[get_column_letter(col[0].column)].width = max_len + 2
+    wb.save(output_file)
 
     print("\n✅ DONE Saved in ", output_file)
     print('Thanks For Using...')
+
+if __name__ == '__main__':
+    main()

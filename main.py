@@ -5,9 +5,10 @@ import sys
 import time
 import json
 from datetime import datetime
-import win32com.client
+import platform
 from utils import SESSION, get_auction_date
 from make_excel import main
+from __version__ import __version__
 requests = SESSION()
 
 def resource_path(relative_path):
@@ -109,8 +110,7 @@ class API:
                 time.sleep(1)
                 break
 
-
-def check_for_update(current_version="v1.2"):
+def check_for_update(current_version):
     try:
         res = requests.get(
             "https://api.github.com/repos/Tariqv/US-FL-County-Foreclosure-Sale-Scraper/releases/latest",
@@ -127,7 +127,7 @@ def start_gui():
     re_path = resource_path("Animation/Animation.html")
     html_path = os.path.abspath(re_path)
     window = webview.create_window(
-        "FL Foreclosure County Scraper v1.2",
+        f"FL Foreclosure County Scraper v{__version__}",
         url=f"file://{html_path}",
         width=1100,
         height=700,
@@ -141,13 +141,11 @@ def start_gui():
     sys.stderr = combined
 
     def run_checks():
-
         api.vpn_check_loop()
-        is_outdated, latest = check_for_update("v1.2")
+        is_outdated, latest = check_for_update(__version__)
         if is_outdated:
             api.stream(
-                f"🚨 New version available: {latest} Please upgrade to continue.\n"
-            )
+                f"🚨 New version available: {latest} Please download latest application and restart to continue.\n")
             return
 
         if api.vpn_verified:
@@ -156,34 +154,55 @@ def start_gui():
             try:
                 main()
             except Exception as e:
-                api.stream(f"❌ Error in main(): {str(e)}")
+                api.stream(f"Unable to start application Error: {str(e)}. Please report this error on https://github.com/Tariqv/US-FL-County-Foreclosure-Sale-Scraper/issues with logs and screenshot(optional).")
 
     threading.Thread(target=run_checks, daemon=True).start()
     webview.start(gui="edgechromium" if os.name == "nt" else None)
 
-def create_start_menu_shortcut():
-    exe_path = sys.executable
-    shortcut_name = "FL Foreclosure Scraper.lnk"
 
+def create_shortcut():
+    system = platform.system()
+
+    if system == "Windows":
+        create_windows_shortcut()
+    elif system == "Linux":
+        create_linux_desktop_entry()
+    elif system == "Darwin":
+        pass
+
+def create_windows_shortcut():
+    import win32com.client
+
+    exe_path = sys.executable
     start_menu = os.path.join(
         os.environ["APPDATA"], "Microsoft", "Windows", "Start Menu", "Programs"
     )
 
-    shortcut_path = os.path.join(start_menu, shortcut_name)
+    shortcut_path = os.path.join(start_menu, "FL Foreclosure Scraper.lnk")
 
-    if not os.path.exists(shortcut_path):
-        try:
-            shell = win32com.client.Dispatch("WScript.Shell")
-            shortcut = shell.CreateShortCut(shortcut_path)
-            shortcut.TargetPath = exe_path
-            shortcut.WorkingDirectory = os.path.dirname(exe_path)
-            shortcut.IconLocation = exe_path
-            shortcut.save()
-        except Exception:
-            pass
-    else:
-        pass
+    shell = win32com.client.Dispatch("WScript.Shell")
+    shortcut = shell.CreateShortCut(shortcut_path)
+    shortcut.TargetPath = exe_path
+    shortcut.WorkingDirectory = os.path.dirname(exe_path)
+    shortcut.IconLocation = exe_path
+    shortcut.save()
+
+def create_linux_desktop_entry():
+    exe_path = sys.executable
+    desktop_file = os.path.expanduser(
+        "~/.local/share/applications/FL Foreclosure Scraper.desktop"
+    )
+
+    content = f"""[Desktop Entry]
+        Name=FL Foreclosure Scraper
+        Exec={exe_path}
+        Type=Application
+        Terminal=false
+    """
+
+    with open(desktop_file, "w") as f:
+        f.write(content)
 
 if __name__ == "__main__":
-    create_start_menu_shortcut()
+    create_shortcut()
     start_gui()

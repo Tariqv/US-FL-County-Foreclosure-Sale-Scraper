@@ -196,7 +196,7 @@ python main.py
 git clone https://github.com/Tariqv/US-FL-County-Foreclosure-Sale-Scraper.git
 cd US-FL-County-Foreclosure-Sale-Scraper
 pip install -r requirements.txt
-pytest  # Run test suite
+python make_excel.py
 ```
 
 ### **Project Structure**
@@ -255,8 +255,13 @@ pytest  # Run test suite
 ---
 
 ## 📝 Changelog
-
 ### **v1.2** (Current)
+- 🛠️🐛 Bug Fix.
+- 🗓️ Fixed upcoming calendar parser.
+- 📊 Improved Excel output (better message, better Sheet2).
+- 🧪 removed pytest.
+
+### **v1.2**
 - 🚀 Removed Playwright—4-5× faster execution
 - 🌐 Added `curl_cffi` with Chrome fingerprinting
 - ⚡ Rewrote scraper engine (multi-page, filtering)
@@ -279,9 +284,4 @@ MIT License – see [LICENSE](LICENSE)
 
 **🏠 Built for Florida real estate investors**
 
-*Updated: December 2025*
-
-
-
-
-
+*Updated: March 2026*

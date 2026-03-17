@@ -127,7 +127,7 @@ def start_gui():
     re_path = resource_path("Animation/Animation.html")
     html_path = os.path.abspath(re_path)
     window = webview.create_window(
-        f"FL Foreclosure County Scraper v{__version__}",
+        f"FL Foreclosure County Scraper {__version__}",
         url=f"file://{html_path}",
         width=1100,
         height=700,

@@ -80,6 +80,8 @@ def scrape_county(county_name, base_url, auction_date):
             "WK" in parcel or
             "TIMESHARE" in parcel
         )
+        if not auction.get('sold_to') and not is_timeshare:
+            continue
         if 'taxdeed' in (auction.get('auction_type') or '').lower():
             print('⚠️ Found taxdeed skipping auction')
             continue

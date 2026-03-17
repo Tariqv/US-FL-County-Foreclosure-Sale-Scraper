@@ -17,7 +17,7 @@ def find_next_upcoming(base_url, auction_date):
             if not item["type"]:
                 continue
             day_date = datetime.strptime(item["date"], "%m/%d/%Y")
-            if day_date >= date_obj:
+            if day_date > date_obj or day_date == month_start:
                 return {
                     "found": True,
                     "next_date": item["date"],

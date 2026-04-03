@@ -255,7 +255,7 @@ python make_excel.py
 ---
 
 ## 📝 Changelog
-### **v1.2** (Current)
+### **v1.3** (Current)
 - 🛠️🐛 Bug Fix.
 - 🗓️ Fixed upcoming calendar parser.
 - 📊 Improved Excel output (better message, better Sheet2).

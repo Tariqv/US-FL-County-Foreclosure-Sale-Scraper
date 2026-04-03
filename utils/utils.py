@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
-import re, os
+import re
+import os
 from curl_cffi import requests
 from datetime import datetime, timedelta
 import usaddress

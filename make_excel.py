@@ -31,7 +31,7 @@ def check_404_status():
     url = 'https://www.alachua.realforeclose.com/'
     
     r = session.get(url)
-    if r.status_code == 404:
+    if r.status_code in (404, 403):
         return True
     return False
 

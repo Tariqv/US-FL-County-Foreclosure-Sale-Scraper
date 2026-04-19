@@ -1,10 +1,25 @@
-*__pycache__
+__pycache__/
 *.pyc
-*.xlsx
-*logs
-*venv
-*dist
-*build
+
+.venv/
+venv/
+env/
+ENV/
+fl_venv/
+fl/
+
+dist/
+build/
 *.spec
-*.pytest_cache
-FL Forclosure Final Report
+
+logs/
+*.log
+
+.pytest_cache/
+
+*.xlsx
+
+FL Forclosure Final Report/
+
+**/.venv/
+**/venv/

@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import re
 import os
-from curl_cffi import requests
+import requests
 from datetime import datetime, timedelta
 import usaddress
 
@@ -23,7 +23,7 @@ REPLACEMENTS = {
 }
 
 def SESSION():
-    SESSION = requests.Session(impersonate='chrome')
+    SESSION = requests.Session()
     HEADERS = {
         "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
         "upgrade-insecure-requests": "1",

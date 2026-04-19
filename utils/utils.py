@@ -5,6 +5,8 @@ from curl_cffi import requests
 from datetime import datetime, timedelta
 import usaddress
 
+SUBTRACTION_DATE = 1
+
 REPLACEMENTS = {
     "@A": '<div class="',
     "@B": "</div>",
@@ -150,9 +152,9 @@ def parse_calendar(html):
 
     return results or None
 
-def get_auction_date():
+def get_auction_date(sub_days=SUBTRACTION_DATE):
     real_date = datetime.now()
-    yesterday = real_date - timedelta(days=1)
+    yesterday = real_date - timedelta(days=sub_days)
     AUCTION_DATE = yesterday.strftime("%m/%d/%Y")
     return AUCTION_DATE
 

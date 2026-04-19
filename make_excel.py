@@ -1,3 +1,4 @@
+import sys
 import pandas as pd
 from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
@@ -6,8 +7,7 @@ from upcoming import find_next_upcoming
 from db.base_url import COUNTY_URLS
 from utils import get_auction_date, extract_from_address, SESSION, init_usaddress
 import os
-
-date = get_auction_date()
+from curl_cffi.requests.exceptions import RequestException
 
 EXPECTED_MAP = {
     "county": "County",
@@ -60,7 +60,9 @@ def build_rows(county, auctions):
     return rows
 
 
-def main():
+DEFAUTL_PATH = 'FL Forclosure Final Report'
+DEFAUTL_AUCTION_DATE = get_auction_date()
+def main(output_path=DEFAUTL_PATH, auction_date=DEFAUTL_AUCTION_DATE):
     init_usaddress()
     all_rows = []
     sheet2_rows = []
@@ -70,14 +72,27 @@ def main():
         print('Thanks For Using...')
         return
 
+    print("👋 Welcome to FL Foreclosure County Scraper...\n")
+    print(f"=== Start Scraping {auction_date} ===\n")
+
+    os.makedirs(output_path, exist_ok=True)
+    output_file =  os.path.join(output_path, f"Final_{auction_date.replace('/', '-')}.xlsx")
+    if os.path.exists(output_file):
+        try:
+            os.rename(output_file, output_file)
+            print('FILE ALREADY EXISTS RE SCRAPING AND UPDATING DATA.')
+        except PermissionError:
+            print("⚠️ Please close the Excel file first and rerun application.")
+            return
+
     for county, base_url in COUNTY_URLS.items():
-        auctions = scrape_county(county, base_url, date)
+        auctions = scrape_county(county, base_url, auction_date)
         if auctions:
             rows = build_rows(county, auctions)
             all_rows.extend(rows)
         else:
             print(f'⚠️ Skipping {county} No Data Found.')
-        upcoming = find_next_upcoming(base_url, date)
+        upcoming = find_next_upcoming(base_url, auction_date)
         if not upcoming:
             print(f'⚠️ No upcoming auction found for {county} in 12 months.')
         sheet2_rows.append({
@@ -85,15 +100,6 @@ def main():
             "Upcoming Date": upcoming.get('next_date') or "No upcoming auction found in 12 months for this county",
             "Auction Type": "FORECLOSURE"
         })
-    output_folder = "FL Forclosure Final Report"
-    os.makedirs(output_folder, exist_ok=True)
-    output_file =  os.path.join(output_folder, f"Final_{date.replace('/', '-')}.xlsx")
-    if os.path.exists(output_file):
-        try:
-            os.rename(output_file, output_file)
-        except PermissionError:
-            print("⚠️ Please close the Excel file first and rerun application.")
-            return
     df2 = pd.DataFrame(sheet2_rows)
     if all_rows:
         df = pd.DataFrame(all_rows)
@@ -114,7 +120,7 @@ def main():
             df2.to_excel(writer, sheet_name="Sheet2", index=False)
 
     else:
-        print("⚠️ No 3rd party bidder auction found. Writing upcoming auctions only.")
+        print("⚠️ No 3rd party bidder auction found. Writing upcoming auctions on the First Sheet.")
         df2.to_excel(output_file, index=False)
 
     wb = load_workbook(output_file)
@@ -128,4 +134,11 @@ def main():
     print('Thanks For Using...')
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print('Interrupted by User')
+        sys.exit(32)
+    except RequestException as e:
+        print(f'Request failed {e}')
+        sys.exit(1)

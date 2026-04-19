@@ -41,10 +41,8 @@ def parse_update_dict(update_json):
     return out
 
 def scrape_county(county_name, base_url, auction_date):
-    import json
     print(f"\n=== Scraping {county_name} ===")
     final_auctions = []
-    seen_ids = set()
     session = SESSION()
     print(f"🔄 Start Scraping {county_name} 🕸️...")
     preview = f"{base_url}/index.cfm?zaction=AUCTION&Zmethod=PREVIEW&AUCTIONDATE={auction_date}"

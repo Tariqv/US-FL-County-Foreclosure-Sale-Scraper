@@ -6,7 +6,7 @@ import time
 import json
 from datetime import datetime
 import platform
-from utils import SESSION, get_auction_date
+from utils import SESSION
 from make_excel import main
 from __version__ import __version__
 requests = SESSION()
@@ -149,8 +149,6 @@ def start_gui():
             return
 
         if api.vpn_verified:
-            api.stream("👋 Welcome to FL Foreclosure County Scraper...\n")
-            api.stream(f"=== Start Scraping {get_auction_date()} ===\n")
             try:
                 main()
             except Exception as e:

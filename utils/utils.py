@@ -19,24 +19,27 @@ REPLACEMENTS = {
     "@I": "table",
     "@J": 'p_back="NextCheck=',
     "@K": 'style="Display:none"',
-    "@L": '/index.cfm?zaction=auction&zmethod=details&AID=',
+    "@L": "/index.cfm?zaction=auction&zmethod=details&AID=",
 }
+
 
 def SESSION():
     SESSION = requests.Session()
     HEADERS = {
         "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
         "upgrade-insecure-requests": "1",
-        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
     }
     SESSION.headers.update(HEADERS)
     return SESSION
+
 
 def decode_html(raw):
     html = raw
     for token, val in REPLACEMENTS.items():
         html = html.replace(token, val)
     return html
+
 
 def parse_realforeclose(county, html):
     soup = BeautifulSoup(html, "html.parser")
@@ -54,7 +57,7 @@ def parse_realforeclose(county, html):
             "parcel_id": None,
             "parcel_url": None,
             "property_address": None,
-            "plaintiff_max_bid": None
+            "plaintiff_max_bid": None,
         }
 
         pairs = []
@@ -69,12 +72,12 @@ def parse_realforeclose(county, html):
             for i in range(0, len(divs), 2):
                 label = divs[i].get_text(strip=True)
                 if i + 1 < len(divs):
-                    pairs.append((label, divs[i+1]))
+                    pairs.append((label, divs[i + 1]))
 
         def is_label(text, key):
             t = text.lower()
             return key in t or t.startswith(key)
-        
+
         for label, val_el in pairs:
             txt = val_el.get_text(strip=True)
             link = val_el.find("a")
@@ -117,15 +120,15 @@ def parse_realforeclose(county, html):
 
     return auctions
 
+
 def parse_calendar(html):
     soup = BeautifulSoup(html, "html.parser")
     results = []
 
     for row in soup.select(".CALDAYBOX"):
         for box in row.select(".CALBOX"):
-            
             dayid = box.get("dayid")
-            
+
             calnum = box.select_one(".CALNUM")
             day = int(calnum.text.strip()) if calnum else None
 
@@ -141,22 +144,26 @@ def parse_calendar(html):
                 scheduled = 0
                 time = None
 
-            results.append({
-                "date": dayid,
-                "day": day,
-                "type": type_name,
-                "active": active,
-                "scheduled": scheduled,
-                "time": time
-            })
+            results.append(
+                {
+                    "date": dayid,
+                    "day": day,
+                    "type": type_name,
+                    "active": active,
+                    "scheduled": scheduled,
+                    "time": time,
+                }
+            )
 
     return results or None
+
 
 def get_auction_date(sub_days=SUBTRACTION_DATE):
     real_date = datetime.now()
     yesterday = real_date - timedelta(days=sub_days)
     AUCTION_DATE = yesterday.strftime("%m/%d/%Y")
     return AUCTION_DATE
+
 
 def extract_from_address(address: str):
     address = (address or "").strip()
@@ -168,7 +175,7 @@ def extract_from_address(address: str):
     except usaddress.RepeatedLabelError:
         parsed = {}
     zipcode = (parsed.get("ZipCode") or "").strip()
-    city    = (parsed.get("PlaceName") or "").strip().upper()
+    city = (parsed.get("PlaceName") or "").strip().upper()
 
     if not zipcode:
         m = re.search(r"\b(\d{5})(?:-\d{4})?\b", address)
@@ -194,8 +201,12 @@ def extract_from_address(address: str):
                     city = parts[-1].strip().upper()
 
     street_parts = []
-    for key in ["AddressNumber", "StreetNamePreDirectional",
-                "StreetName", "StreetNamePostType"]:
+    for key in [
+        "AddressNumber",
+        "StreetNamePreDirectional",
+        "StreetName",
+        "StreetNamePostType",
+    ]:
         if key in parsed:
             street_parts.append(parsed[key])
 
@@ -210,6 +221,9 @@ def extract_from_address(address: str):
 
     return street, city, "FL", zipcode
 
+
 def init_usaddress():
-    model_path = os.path.join(os.path.dirname(__file__), "usaddress", "data", "usaddr.crfsuite")
+    model_path = os.path.join(
+        os.path.dirname(__file__), "usaddress", "data", "usaddr.crfsuite"
+    )
     usaddress.TAGGER.open(model_path)

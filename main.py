@@ -9,12 +9,15 @@ import platform
 from utils import SESSION
 from make_excel import main
 from __version__ import __version__
+
 requests = SESSION()
+
 
 def resource_path(relative_path):
     if hasattr(sys, "_MEIPASS"):
         return os.path.join(sys._MEIPASS, relative_path)
     return os.path.join(os.path.abspath("."), relative_path)
+
 
 class Logger:
     def __init__(self, stream_callback=None):
@@ -34,9 +37,7 @@ class Logger:
             self.log_file.write(text)
             self.log_file.flush()
             if self.stream_callback:
-                self.stream_callback(
-                    text.strip()
-                )
+                self.stream_callback(text.strip())
 
     def flush(self):
         self.log_file.flush()
@@ -71,6 +72,7 @@ class GuiStream:
         if self.buffer.strip():
             self.stream_func(self.buffer.strip())
         self.buffer = ""
+
 
 class API:
     def __init__(self, window):
@@ -110,6 +112,7 @@ class API:
                 time.sleep(1)
                 break
 
+
 def check_for_update(current_version):
     try:
         res = requests.get(
@@ -122,6 +125,7 @@ def check_for_update(current_version):
     except Exception:
         pass
     return False, None
+
 
 def start_gui():
     re_path = resource_path("Animation/Animation.html")
@@ -145,14 +149,17 @@ def start_gui():
         is_outdated, latest = check_for_update(__version__)
         if is_outdated:
             api.stream(
-                f"🚨 New version available: {latest} Please download latest application and restart to continue.\n")
+                f"🚨 New version available: {latest} Please download latest application and restart to continue.\n"
+            )
             return
 
         if api.vpn_verified:
             try:
                 main()
             except Exception as e:
-                api.stream(f"Unable to start application Error: {str(e)}. Please report this error on https://github.com/Tariqv/US-FL-County-Foreclosure-Sale-Scraper/issues with logs and screenshot(optional).")
+                api.stream(
+                    f"Unable to start application Error: {str(e)}. Please report this error on https://github.com/Tariqv/US-FL-County-Foreclosure-Sale-Scraper/issues with logs and screenshot(optional)."
+                )
 
     threading.Thread(target=run_checks, daemon=True).start()
     webview.start(gui="edgechromium" if os.name == "nt" else None)
@@ -167,6 +174,7 @@ def create_shortcut():
         create_linux_desktop_entry()
     elif system == "Darwin":
         pass
+
 
 def create_windows_shortcut():
     import win32com.client
@@ -185,6 +193,7 @@ def create_windows_shortcut():
     shortcut.IconLocation = exe_path
     shortcut.save()
 
+
 def create_linux_desktop_entry():
     exe_path = sys.executable
     desktop_file = os.path.expanduser(
@@ -200,6 +209,7 @@ def create_linux_desktop_entry():
 
     with open(desktop_file, "w") as f:
         f.write(content)
+
 
 if __name__ == "__main__":
     create_shortcut()

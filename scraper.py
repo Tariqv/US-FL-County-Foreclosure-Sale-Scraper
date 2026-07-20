@@ -1,9 +1,11 @@
 from utils import SESSION, parse_realforeclose, decode_html
 
+
 def scrape_page(session, base_url, area="C", page_dir=0, county=None):
     load_url = (
         f"{base_url}/index.cfm?zaction=AUCTION"
-        f"&Zmethod=UPDATE&FNC=LOAD&AREA={area}&bypassPage={page_dir}")
+        f"&Zmethod=UPDATE&FNC=LOAD&AREA={area}&bypassPage={page_dir}"
+    )
     res = session.get(load_url)
     try:
         load_json = res.json()
@@ -26,6 +28,7 @@ def scrape_page(session, base_url, area="C", page_dir=0, county=None):
 
     return html_items
 
+
 def parse_update_dict(update_json):
     items = update_json.get("ADATA", {}).get("AITEM", [])
     out = {}
@@ -35,10 +38,11 @@ def parse_update_dict(update_json):
             continue
         out[aid] = {
             "auction_time": it.get("B") or None,
-            "sold_to": it.get('ST'),
-            "amount": it.get('D'),
+            "sold_to": it.get("ST"),
+            "amount": it.get("D"),
         }
     return out
+
 
 def scrape_county(county_name, base_url, auction_date):
     print(f"\n=== Scraping {county_name} ===")
@@ -54,7 +58,9 @@ def scrape_county(county_name, base_url, auction_date):
     if not all_auctions:
         return []
     try:
-        upd = session.get(f"{base_url}/index.cfm?zaction=AUCTION&ZMETHOD=UPDATE&FNC=UPDATE").json()
+        upd = session.get(
+            f"{base_url}/index.cfm?zaction=AUCTION&ZMETHOD=UPDATE&FNC=UPDATE"
+        ).json()
         max_pages = int(upd.get("CM", 1))
         print(f"📄 Total Pages: {max_pages}")
     except Exception:
@@ -65,7 +71,7 @@ def scrape_county(county_name, base_url, auction_date):
         print(f"🔄 Navigating to page {p}...")
         page_result = scrape_page(session, base_url, "C", p, county_name)
         all_auctions.extend(page_result)
-    
+
     def make_key(ac):
         return (
             ac.get("case_number")
@@ -93,22 +99,21 @@ def scrape_county(county_name, base_url, auction_date):
 
     for auction in dedupe_auctions(all_auctions):
         parcel = str(auction.get("parcel_id", "PARCEL_ID")).upper()
-        is_timeshare = (
-            "TS" in parcel or
-            "TIMESHARE" in parcel
-        )
-        if not auction.get('sold_to'):
+        is_timeshare = "TS" in parcel or "TIMESHARE" in parcel
+        if not auction.get("sold_to"):
             continue
-        if 'taxdeed' in (auction.get('auction_type') or '').lower():
-            print('⚠️ Found taxdeed skipping auction.')
+        if "taxdeed" in (auction.get("auction_type") or "").lower():
+            print("⚠️ Found taxdeed skipping auction.")
             continue
-        if '3rd Party' in auction.get('sold_to') and not is_timeshare:
+        if "3rd Party" in auction.get("sold_to") and not is_timeshare:
             final_auctions.append(auction)
-            auction.pop("aid", None)            
+            auction.pop("aid", None)
         elif is_timeshare:
-            print('⚠️ Found timeshare skipping this auction.')
+            print("⚠️ Found timeshare skipping this auction.")
             continue
 
     if final_auctions:
-        print(f"✅ Finished {county_name} Scraping: ({len(final_auctions)}) 3rd party Found.")
+        print(
+            f"✅ Finished {county_name} Scraping: ({len(final_auctions)}) 3rd party Found."
+        )
     return final_auctions

@@ -1,6 +1,7 @@
 from utils import SESSION, parse_calendar
 from datetime import datetime, timedelta
 
+
 def find_next_upcoming(base_url, auction_date):
     session = SESSION()
     base_date = datetime.strptime(auction_date, "%m/%d/%Y")
@@ -13,8 +14,8 @@ def find_next_upcoming(base_url, auction_date):
         res = session.get(url)
         cal_items = parse_calendar(res.text)
         for item in cal_items:
-            date = item.get('date')
-            if not date or not item.get('type'):
+            date = item.get("date")
+            if not date or not item.get("type"):
                 continue
 
             day_date = datetime.strptime(date, "%m/%d/%Y")

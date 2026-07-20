@@ -1,6 +1,7 @@
 COUNTY_URLS = {
     "ALACHUA": "https://www.alachua.realforeclose.com",
     "BAY": "https://bay.realforeclose.com",
+    "BAKER": "https://www.baker.realforeclose.com",
     "BROWARD": "https://www.broward.realforeclose.com",
     "CHARLOTTE": "https://www.charlotte.realforeclose.com",
     "CITRUS": "https://www.citrus.realforeclose.com",

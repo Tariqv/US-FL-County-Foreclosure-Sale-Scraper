@@ -112,7 +112,7 @@ def main(output_path=DEFAULT_PATH, auction_date=DEFAULT_AUCTION_DATE):
     sheet2_rows = []
 
     if check_404_status():
-        print("⚠️ Please reconnect or change VPN location.")
+        print("⚠️ Please reconnect or change VPN location to US.")
         print("Thanks for using...")
         return
 
@@ -127,7 +127,7 @@ def main(output_path=DEFAULT_PATH, auction_date=DEFAULT_AUCTION_DATE):
     if os.path.exists(output_file):
         print("⚠️ File already exists → overwriting...")
 
-    for county, base_url in COUNTY_URLS.items():
+    for county, base_url in sorted(COUNTY_URLS.items()):
         auctions = scrape_county(county, base_url, auction_date)
 
         if auctions:

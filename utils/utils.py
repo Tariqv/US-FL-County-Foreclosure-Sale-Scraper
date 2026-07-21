@@ -86,7 +86,8 @@ def parse_realforeclose(county, html):
                 data["auction_type"] = txt
 
             elif is_label(label, "case"):
-                data["case_number"] = link.get_text(strip=True) if link else txt
+                data["case_number"] = link.get_text(
+                    strip=True) if link else txt
                 data["case_number_url"] = link["href"] if link else None
 
             elif is_label(label, "final judgment"):

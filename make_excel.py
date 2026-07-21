@@ -44,7 +44,8 @@ def norm(x: str):
 def build_rows(county, auctions):
     rows = []
     for a in auctions:
-        only_address, City, State, Zip = extract_from_address(a.get("property_address"))
+        only_address, City, State, Zip = extract_from_address(
+            a.get("property_address"))
         rows.append(
             {
                 "County": county.upper(),
@@ -76,7 +77,8 @@ def write_excel(all_rows, sheet2_rows, output_file):
         ws1.append(final_cols)
 
         for row in all_rows:
-            normalized_row = {EXPECTED_MAP.get(norm(k), k): v for k, v in row.items()}
+            normalized_row = {EXPECTED_MAP.get(
+                norm(k), k): v for k, v in row.items()}
             ws1.append([normalized_row.get(col) for col in final_cols])
 
     ws2 = wb.create_sheet("Sheet2")
@@ -93,8 +95,10 @@ def auto_width(output_file):
     wb = load_workbook(output_file)
     for ws in wb.worksheets:
         for col in ws.columns:
-            max_len = max((len(str(c.value)) for c in col if c.value), default=0)
-            ws.column_dimensions[get_column_letter(col[0].column)].width = max_len + 2
+            max_len = max((len(str(c.value))
+                          for c in col if c.value), default=0)
+            ws.column_dimensions[get_column_letter(
+                col[0].column)].width = max_len + 2
     wb.save(output_file)
 
 

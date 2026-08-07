@@ -132,24 +132,24 @@ def main(output_path=DEFAULT_PATH, auction_date=DEFAULT_AUCTION_DATE):
         print("⚠️ File already exists → overwriting...")
 
     for county, base_url in sorted(COUNTY_URLS.items()):
-        auctions = scrape_county(county, base_url, auction_date)
-
-        if auctions:
-            rows = build_rows(county, auctions)
-            all_rows.extend(rows)
-        else:
-            print(f"⚠️ Skipping {county} (No Data)")
-
-        upcoming = find_next_upcoming(base_url, auction_date)
-
-        sheet2_rows.append(
-            {
-                "County": county.upper(),
-                "Upcoming Date": (upcoming or {}).get("next_date")
-                or "No upcoming auction found in 12 months",
-                "Auction Type": "FORECLOSURE",
-            }
-        )
+        try:
+            auctions = scrape_county(county, base_url, auction_date)
+            if auctions:
+                rows = build_rows(county, auctions)
+                all_rows.extend(rows)
+            else:
+                print(f"⚠️ Skipping {county} (No Data)")
+            upcoming = find_next_upcoming(base_url, auction_date)
+            sheet2_rows.append(
+                {
+                    "County": county.upper(),
+                    "Upcoming Date": (upcoming or {}).get("next_date")
+                    or "No upcoming auction found in 12 months",
+                    "Auction Type": "FORECLOSURE",
+                }
+            )
+        except Exception as e:
+            print(f'Skipping Site Error: {e}')
 
     if not all_rows:
         print("⚠️ No 3rd party bidder auction found. Writing upcoming only.")

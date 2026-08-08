@@ -32,7 +32,6 @@ A lightweight, high-performance tool for extracting foreclosure auction data fro
 ### 🔒 **Reliability** 
 - **VPN Detection**: Validates US-based IP before execution
 - **Auto-Updates**: Built-in version checker with notifications
-- **Chrome Fingerprinting**: Uses `curl_cffi` with TLS/JA3 impersonation for undetected requests
 - **Error Recovery**: Automatic retries with comprehensive logging
 
 ### 📊 **Output**
@@ -58,7 +57,7 @@ A lightweight, high-performance tool for extracting foreclosure auction data fro
 
 **Full List:**
 ```
-Alachua, Bay, Broward, Charlotte, Citrus, Clay, Duval, Escambia, 
+Alachua, Bay, Baker, Broward, Charlotte, Clay, Duval, Escambia, 
 Flagler, Gilchrist, Gulf, Hillsborough, Indian River, Jackson, 
 Lee, Leon, Manatee, Marion, Martin, Miami-Dade, Nassau, Okeechobee,
 Orange, Palm Beach, Pasco, Pinellas, Polk, Putnam, Santa Rosa, 
@@ -87,6 +86,7 @@ Sarasota, Seminole, St. Johns, St. Lucie, Volusia, Walton, Washington
 
 ### **Developer Setup**
 
+## GUI
 ```bash
 git clone https://github.com/Tariqv/US-FL-County-Foreclosure-Sale-Scraper.git
 cd US-FL-County-Foreclosure-Sale-Scraper
@@ -94,9 +94,16 @@ pip install -r requirements.txt
 python main.py
 ```
 
+## CLI
+```
+git clone https://github.com/Tariqv/US-FL-County-Foreclosure-Sale-Scraper.git
+cd US-FL-County-Foreclosure-Sale-Scraper
+pip install -r requirements.txt
+python flscrape.py
+```
+
 **Dependencies:**
-- `curl_cffi` – Chrome-impersonated HTTP requests
-- `pandas` – Data processing
+- `requests` – HTTP requests
 - `openpyxl` – Excel generation
 - `pywebview` – GUI framework
 - `pytz` – Timezone handling
@@ -163,9 +170,8 @@ python main.py
 - Excel formatting/export
 
 ### **Technology Stack**
-- **curl_cffi**: Chrome TLS fingerprinting (replaces Playwright)
+- **requests**: Htpp-Request
 - **Pywebview**: HTML/CSS-based GUI
-- **Pandas**: Data manipulation
 - **OpenPyXL**: Excel styling
 
 ---
@@ -203,14 +209,11 @@ python make_excel.py
 ```
 ├── main.py              # Entry point
 ├── db/                  # County configs
-├── Utils/               # Helper functions
 ├── Animation/           # GUI assets
-└── tests/               # pytest suite
 ```
 
 ### **PR Guidelines**
 1. Fork & create feature branch
-2. Add tests for new functionality
 3. Ensure pytest passes
 4. Submit PR with clear description
 
@@ -255,7 +258,14 @@ python make_excel.py
 ---
 
 ## 📝 Changelog
-### **v1.3** (Current)
+
+## **v1.4** (current)
+- Bug fix
+- Removed Citrus
+- Added Baker
+- removed curl_cffi and added requests
+
+### **v1.3**
 - 🛠️🐛 Bug Fix.
 - 🗓️ Fixed upcoming calendar parser.
 - 📊 Improved Excel output (better message, better Sheet2).
@@ -284,4 +294,4 @@ MIT License – see [LICENSE](LICENSE)
 
 **🏠 Built for Florida real estate investors**
 
-*Updated: March 2026*
+*Updated: August 2026*

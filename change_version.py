@@ -31,5 +31,5 @@ def change_version(version):
 
 
 if __name__ == "__main__":
-    NEW_VERSION = "v1.3"  # CHANGE VERSION HERE AND RUN THIS FILE
+    NEW_VERSION = "v1.4"  # CHANGE VERSION HERE AND RUN THIS FILE
     change_version(NEW_VERSION)

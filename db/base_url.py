@@ -4,7 +4,6 @@ COUNTY_URLS = {
     "BAKER": "https://baker.realforeclose.com",
     "BROWARD": "https://www.broward.realforeclose.com",
     "CHARLOTTE": "https://www.charlotte.realforeclose.com",
-    "CITRUS": "https://www.citrus.realforeclose.com",
     "CLAY": "https://www.clay.realforeclose.com",
     "DUVAL": "https://www.duval.realforeclose.com",
     "ESCAMBIA": "https://escambia.realforeclose.com",
